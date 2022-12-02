@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">FastPharma - OutOfTheBox</string>
+
+    <string name="main_message">Scansionate un NFC formattato con il
+    formato di FastPharma</string>
+
+    <string name="expir_date_pre">Data di scadenza:</string>
+    <string name="expir_date_warming">Pochi mesi al limite legale di vendita\n(1 anno)</string>
+    <string name="expir_date_late">Rimuovere dagli scaffali!</string>
+    <string name="expir_date_expired">Scaduto!</string>
+    <string name="expir_date_error">Errore: formato sconosciuto di NFC</string>
+</resources>
