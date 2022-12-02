@@ -52,7 +52,7 @@ class NFCResult : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.expTimeLeft).text = timeStr
-        findViewById<TextView>(R.id.expDate).text = date.format(DateTimeFormatter.ISO_LOCAL_DATE)
+        findViewById<TextView>(R.id.expDate).text = date.format(DateTimeFormatter.ofPattern("MM-YYYY"))
 
         val background = findViewById<View>(R.id.background)
         val infoText = findViewById<TextView>(R.id.expInfo)
