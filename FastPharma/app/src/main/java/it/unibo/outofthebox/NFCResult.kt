@@ -8,16 +8,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import org.w3c.dom.Text
-import java.time.Duration
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
 
 class NFCResult : AppCompatActivity() {
-    private var expirationDate: LocalDate? = null
+    private var currentMedicineTag: TagMedicine? = null
 
     private fun processTag(intent: Intent) {
         if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
@@ -26,23 +24,15 @@ class NFCResult : AppCompatActivity() {
                 val messages: List<NdefMessage> = rawMessages.map { it as NdefMessage }
                 messages.forEach {
                     Log.i("OutOfTheBox", "Read message $it")
-                    val msg = String(it.records[0].payload)
-                    Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
-                    Log.i("OutOfTheBox", "Message contains $msg")
 
-                    val date = ParseTag.getDate(msg)
-                    if (date != null) {
-                        expirationDate = date
-                        return
-                    }
+                    currentMedicineTag = ParseTag.parseTagMedicine(it) ?: currentMedicineTag
                 }
             }
         }
-
-        expirationDate = null
     }
 
-    private fun processDate(date: LocalDate) {
+    private fun processTagInfo(medicineTag: TagMedicine) {
+        val date = medicineTag.expirationDate
         val now = LocalDate.now()
         val timeLeft = Period.between(now, date)
         val timeStr = if (timeLeft.years > 0 || timeLeft.months >= 1) {
@@ -56,22 +46,30 @@ class NFCResult : AppCompatActivity() {
 
         val background = findViewById<View>(R.id.background)
         val infoText = findViewById<TextView>(R.id.expInfo)
+        var textColor: Int
+
         if (date.isBefore(now)) {
             background.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.exp_expired))
             infoText.text = resources.getString(R.string.expir_date_expired)
-            infoText.setTextColor(ContextCompat.getColor(applicationContext, R.color.white))
+            textColor = ContextCompat.getColor(applicationContext, R.color.white)
         } else if (timeLeft.years == 0) {
             background.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.exp_notsellable))
             infoText.text = resources.getString(R.string.expir_date_late)
-            infoText.setTextColor(ContextCompat.getColor(applicationContext, R.color.white))
+            textColor = ContextCompat.getColor(applicationContext, R.color.white)
         } else if (timeLeft.months <= 1) {
             background.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.exp_warning))
             infoText.text = resources.getString(R.string.expir_date_warming)
-            infoText.setTextColor(ContextCompat.getColor(applicationContext, R.color.black))
+            textColor = ContextCompat.getColor(applicationContext, R.color.black)
         } else {
             background.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.exp_good))
             infoText.text = ""
+            textColor = ContextCompat.getColor(applicationContext, R.color.white)
         }
+
+        infoText.setTextColor(textColor)
+
+        val nameText = findViewById<TextView>(R.id.medicineName)
+        nameText.text = medicineTag.name
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -88,8 +86,8 @@ class NFCResult : AppCompatActivity() {
         Log.i("OutOfTheBox", "NFCResult activity intent: $intent")
         processTag(intent);
 
-        if (expirationDate != null) {
-            processDate(expirationDate!!)
+        if (currentMedicineTag != null) {
+            processTagInfo(currentMedicineTag!!)
         } else {
             val background = findViewById<View>(R.id.background)
             val infoText = findViewById<TextView>(R.id.expInfo)

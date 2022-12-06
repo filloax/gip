@@ -6,27 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".NFCResult">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardView">
-
-        <TextView
-            android:id="@+id/expInfo"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:gravity="center"
-            android:text="@string/expir_date_warming"
-            android:textColor="@color/black"
-            android:textSize="32dp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="wrap_content"
@@ -58,7 +37,7 @@
                 android:id="@+id/expTimeLeft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="-1 anno"
+                android:text="-_ ___"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/textblack"
                 android:textSize="34sp"
@@ -77,6 +56,61 @@
 
     </androidx.cardview.widget.CardView>
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="32dp"
+        android:padding="5dp"
+        app:cardBackgroundColor="#ddddddff"
+        app:cardCornerRadius="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="@id/cardView"
+        app:layout_constraintStart_toStartOf="@id/cardView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/medicineName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Tachipirina"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/textblack"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardView">
+
+        <TextView
+            android:id="@+id/expInfo"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:gravity="center"
+            android:text="@string/expir_date_warming"
+            android:textColor="@color/black"
+            android:textSize="32dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+    
     <View
         android:id="@+id/background"
         android:layout_width="match_parent"
